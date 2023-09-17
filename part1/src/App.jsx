@@ -1,61 +1,51 @@
+import { useState } from 'react'
+
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => {
+    console.log('increasing, value before', counter)
+    setCounter(counter + 1)
+  }
+
+  const decreaseByOne = () => { 
+    console.log('decreasing, value before', counter)
+    setCounter(counter - 1)
+  }
+
+  const setToZero = () => {
+    console.log('resetting to zero, value before', counter)
+    setCounter(0)
   }
 
   return (
     <div>
-      <Header name={course.name} />
+      <Display counter={counter}/>
 
-      <Content parts={course.parts} />
-
-      <Total parts={course.parts} />
-
+      <Button
+        handleClick={increaseByOne}
+        text='plus'
+      />
+      <Button
+        handleClick={setToZero}
+        text='zero'
+      />     
+      <Button
+        handleClick={decreaseByOne}
+        text='minus'
+      />           
     </div>
   )
 }
 
+const Display = ({counter}) => <div>{counter}</div>
 
-const Header = (props) => {
+const Button = (props) => {
   return (
-    <div>
-      {props.name} 
-    </div>  
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
   )
 }
-
-const Content = (props) => {
-  console.log(props)
-  return (
-    <div>
-      <p> Course name: {props.parts[0].name} Number: {props.parts[0].exercises} </p>
-      <p> Course name: {props.parts[1].name} Number: {props.parts[1].exercises} </p>
-      <p> Course name: {props.parts[2].name} Number: {props.parts[2].exercises} </p>
-    </div>
-   )
-}
-
-const Total = (props) => {
-  return (
-    <div>
-      Total number of exercises: {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}
-    </div>
-  )
-}
-
 
 export default App
