@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import axios from 'axios'
+import personService from './services/personService'
 
 const App = () => {
 
@@ -14,14 +15,12 @@ const App = () => {
 
 
   // Hook de efecto para obtener los datos de la API
-  useEffect(Response => {
-    console.log('Inicio', Response)
-    axios.get('http://localhost:3001/persons')
-    .then(Response => {
-      setPersons(Response.data)
-      console.log('Data is: ', Response.data)
-    })
-  })
+  useEffect(() => {
+      personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)})
+  }, [])
 
 
   // EventHandlers de los campos de ingreso Name y Number
@@ -43,12 +42,12 @@ const App = () => {
       number: newNumber,
     }
 
-    axios.post('http://localhost:3001/persons', newPerson)
-    .then(response => {
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+    personService
+    .create(newPerson)
+    .then(createPerson => {
+      setPersons(persons.concat(createPerson))
     })
+    
 
     
     console.log(persons)
