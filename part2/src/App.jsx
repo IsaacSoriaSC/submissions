@@ -52,7 +52,27 @@ const App = () => {
     console.log(persons)
   }
     else {
-      window.alert( newName + ' already exist on the phonebook' )
+    // Si el usuario YA existe en el Phonebook, pregunta si desea sobreescribir el número
+      if(window.confirm('This user is already on the Phonebook. Do you wish to replace the old number with the new one?'))
+      {
+    // Primero busca el nombre de la persona ya registrada y asigna el objeto entero a updatePerson
+    // Luego modifica updatePerson para que mantenga los datos Y SE SOBREESCRIBA el nuevo número
+        const updatePerson = persons.find(p => p.name === newName)
+        const changePerson = {...updatePerson, number: newNumber}
+
+    // Se llama al servicio y en los parámetros de update, se le pasa el id del objeto recién creado
+    // Como segundo parámetro se le pasa el objeto recién creado
+        personService
+        .update(changePerson.id, changePerson)
+        .then(appliedChanges =>{
+          // Hacemos un mapeo que devuelve cada registro del arreglo, EXCEPTO el que tiene el mismo id
+          // Cuando el mapeo encuentra el que tiene el mismo id, lo cambia por el que acabamos de crear nosotros
+          setPersons(persons.map (p => p.id !== changePerson.id ? p : changePerson))
+          setNewName('')
+          setNewNumber('')
+        })
+
+      }
     }
   }
 
