@@ -14,7 +14,7 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState([])
 
 
-  // Hook de efecto para obtener los datos de la API
+  // Hook de efecto para obtener los datos de la API de manera asíncrona
   useEffect(() => {
       personService
       .getAll()
@@ -36,20 +36,19 @@ const App = () => {
   const setNewPerson = (event) => {
     event.preventDefault()
    if((!persons.find(persona => persona.name == newName)))
+   // Crea un objeto newPerson con los datos obtenidos de los campos de ingreso
    {
     const newPerson = {
       name: newName,
       number: newNumber,
     }
-
+    // Luego llama al servicio personService con la función "create()"
+    // La función "create()" recibe como parámetro el objeto newPerson
     personService
     .create(newPerson)
     .then(createPerson => {
       setPersons(persons.concat(createPerson))
     })
-    
-
-    
     console.log(persons)
   }
     else {
@@ -58,12 +57,25 @@ const App = () => {
   }
 
   // Función para filtrar los nombres de las personas
+  // Agrega el valor actual del campo de ingreso, a la variable Pattern
+  // Luego filtra los nombres del arreglo persons (con Pattern), y los asigna a la variable filteredPersons
   const onChangeFilter = (event) => {
     const pattern = event.target.value
     const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(pattern.toLowerCase()))
     setFilteredPersons(filteredPersons)
     console.log(filteredPersons)
   }
+
+   // Función para borrar un registro del servidor Json con axios
+   const borrarPersona = id => {
+    if(window.confirm('Are you sure you want to delete this person?'))
+    personService
+    .deletePerson(id)
+    .then(deletedPerson => {
+      setPersons(persons.filter(person => person.id !== id))
+    })
+   }
+
 
   return (
     <div>
@@ -78,7 +90,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       
-      <Persons filteredPersons={filteredPersons} persons={persons} />
+      <Persons filteredPersons={filteredPersons} persons={persons} deletePerson={borrarPersona} />
 
     </div>
   )
