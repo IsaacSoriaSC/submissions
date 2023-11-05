@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable n/handle-callback-err */
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
@@ -114,6 +116,13 @@ const App = () => {
             setErrorMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          setErrorMessage('This user has already been removed from server')
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        }
+        )
     }
   }
 
