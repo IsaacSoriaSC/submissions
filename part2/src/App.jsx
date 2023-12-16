@@ -7,6 +7,9 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/personService'
 import Notification from './components/alert'
+import Country from './components/Country'
+import countryService from './services/countryService'
+import FilterCountry from './components/FilterCountry'
 
 const App = () => {
   // Estados de la App (componente principal)
@@ -15,6 +18,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filteredPersons, setFilteredPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
+  const [country, setCountry] = useState([])
+  const [changeCountry, setChangeCountry] = useState ('')
 
   // Hook de efecto para obtener los datos de la API de manera asíncrona
   useEffect(() => {
@@ -22,6 +27,14 @@ const App = () => {
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
+      })
+  }, [])
+
+  useEffect(() => {
+    countryService
+      .getCountry()
+      .then(initialCountry => {
+        setCountry(initialCountry)
       })
   }, [])
 
@@ -33,6 +46,9 @@ const App = () => {
   }
   const onChangeNumber = (event) => {
     setNewNumber(event.target.value)
+  }
+  const onChangeCountry = (event) => {
+    setChangeCountry(event.target.value)
   }
 
   /// ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +117,8 @@ const App = () => {
     console.log(filteredPersons)
   }
 
+ 
+
   /// ///////////////////////////////////////////////////////////////////////////////////////////////////
   // Función para borrar un registro del servidor Json con axios
   const borrarPersona = id => {
@@ -142,6 +160,10 @@ const App = () => {
       <h1>Numbers</h1>
 
       <Persons filteredPersons={filteredPersons} persons={persons} deletePerson={borrarPersona} />
+
+      <Country onChangeCountry={onChangeCountry} />
+
+      <FilterCountry country={country} pattern={changeCountry} />
 
     </div>
   )
