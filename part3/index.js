@@ -40,11 +40,11 @@ app.get('/', (request, response) => {
     response.send(respuesta + fecha)
   })
 
-  app.get('/api/notes/:id', (request, response) => {
+  app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const note = notes.find(note => note.id === id)
-    if (note) {
-      response.json(note)
+    const addre = address.find(addr => addr.id === id)
+    if (addre) {
+      response.json(addre)
     } else {
       response.status(404).end()
     }  })
