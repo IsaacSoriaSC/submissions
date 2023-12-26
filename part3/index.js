@@ -57,30 +57,27 @@ app.get('/', (request, response) => {
     })
 
     const generateId = () => {
-      const maxId = notes.length > 0
-        ? Math.max(...notes.map(n => n.id))
-        : 0
-      return maxId + 1
+      return Math.floor(Math.random() * 1000000)
     }
     
-    app.post('/api/notes', (request, response) => {
+    app.post('/api/persons', (request, response) => {
       const body = request.body
     
-      if (!body.content) {
+      if (!body.name && !body.number) {
         return response.status(400).json({ 
           error: 'content missing' 
         })
       }
     
-      const note = {
-        content: body.content,
-        important: Boolean(body.important) || false,
+      const newAddr = {
         id: generateId(),
+        name: body.name,
+        number: body.number,
       }
     
-      notes = notes.concat(note)
+      address = address.concat(newAddr)
     
-      response.json(note)
+      response.json(newAddr)
     })
 
   const PORT = 3001
