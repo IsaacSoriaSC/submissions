@@ -49,9 +49,9 @@ app.get('/', (request, response) => {
       response.status(404).end()
     }  })
   
-    app.delete('/api/notes/:id', (request, response) => {
+    app.delete('/api/persons/:id', (request, response) => {
       const id = Number(request.params.id)
-      notes = notes.filter(note => note.id !== id)
+      address = address.filter(addr => addr.id !== id)
     
       response.status(204).end()
     })
