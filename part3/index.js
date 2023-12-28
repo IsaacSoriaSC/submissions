@@ -62,6 +62,16 @@ app.get('/', (request, response) => {
       return Math.floor(Math.random() * 1000000)
     }
     
+    morgan.token('post', function (req, res) { return JSON.stringify(req.body) })
+
+    app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post', {
+      skip: function (req, res) { return req.method != 'POST' }
+    }))
+
+    app.use(morgan('tiny', {
+      skip: function (req, res) { return req.method === 'POST' }
+    }))
+
     app.post('/api/persons', (request, response) => {
       const body = request.body
     
@@ -75,6 +85,8 @@ app.get('/', (request, response) => {
         })
       }
       
+      
+
       const newAddr = {
         id: generateId(),
         name: body.name,
