@@ -6,27 +6,16 @@ const Entrie = require('./models/phone')
 const mongoose = require('mongoose')
 
 
-
 app.use(express.static('dist'))
 app.use(cors())
 app.use(express.json())
 
-
-/*let address = Entrie.find({}).then(result => {
-  const entries = result.map(entrie => {
-    return {
-      name: entrie.name,
-      number: entrie.number
-    };
-  });
-  return entries;
-});*/
  
 app.get('/api/persons', (request, response) => {
   Entrie.find({})
     .then(entries => {
-      console.log(entries)
       response.json(entries);
+      console.log(entries)
     })
     .catch(error => {
       console.error('Error fetching entries:', error);
@@ -34,19 +23,17 @@ app.get('/api/persons', (request, response) => {
     });
 });
 
-    app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const addre = address.find(addr => addr.id === id)
-    if (addre) {
-      response.json(addre)
-    } else {
-      response.status(404).end()
-    }  })
   
-    app.get('/api/persons/:id', (request, response) => {
-      Note.findById(request.params.id).then(note => {
-        response.json(note)
+    app.get('/api/persons/:id', (request, response, next) => {
+      Entrie.findById(request.params.id)
+      .then(entrie => {
+        if (entrie) {
+          response.json(entrie)
+        } else {
+          response.status(400).end
+        }
       })
+      .catch(error => next(error))
     })
     
     app.post('/api/persons', (request, response) => {
@@ -66,13 +53,49 @@ app.get('/api/persons', (request, response) => {
       })
     })
 
+    app.put('/api/persons/:id', (request, response, next) => {
+      const body = request.body
+    
+      const entrie = {
+        name: body.name,
+        number: body.number,
+      }
+    
+      Entrie.findByIdAndUpdate(request.params.id, entrie, { new: true })
+        .then(updatedEntrie => {
+          response.json(updatedEntrie)
+        })
+        .catch(error => next(error))
+    })
+
+    app.delete('/api/persons/:id', (request, response, next) => {
+      Entrie.findByIdAndDelete(request.params.id)
+        .then(result => {
+          response.status(204).end()
+        })
+        .catch(error => next(error))
+    })
+
     const unknownEndpoint = (request, response) => {
       response.status(404).send({ error: 'unknown endpoint' })
     }
     
     app.use(unknownEndpoint)
 
+    const requestLogger = (error, request, response, next) => {
+      console.error(error.message)
+    
+      if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+      } 
+    
+      next(error)
+    }
+
+    app.use(requestLogger)
+
     const PORT = process.env.PORT
       app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`)
       })
+
