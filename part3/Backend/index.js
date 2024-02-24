@@ -5,6 +5,7 @@ const cors = require('cors')
 const Entrie = require('./models/phone')
 const mongoose = require('mongoose')
 
+// Error handler moved to use the middleware
 
 app.use(express.static('dist'))
 app.use(cors())
