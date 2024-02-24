@@ -5,7 +5,7 @@ const cors = require('cors')
 const Entrie = require('./models/phone')
 const mongoose = require('mongoose')
 
-// Update user in phonebook done
+// Database routes working with Browser and Postman
 
 app.use(express.static('dist'))
 app.use(cors())
