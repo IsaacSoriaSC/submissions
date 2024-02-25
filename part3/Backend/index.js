@@ -5,7 +5,6 @@ const cors = require('cors')
 const Entrie = require('./models/phone')
 const mongoose = require('mongoose')
 
-
 app.use(express.static('dist'))
 app.use(cors())
 app.use(express.json())
