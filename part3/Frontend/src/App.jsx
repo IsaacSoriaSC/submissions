@@ -18,6 +18,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filteredPersons, setFilteredPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
+  const [errorColor, setErrorColor] = useState(null)
   const [country, setCountry] = useState([])
   const [changeCountry, setChangeCountry] = useState ('')
 
@@ -78,10 +79,21 @@ const App = () => {
           fetchData()
           // Cambiamos el estado del errorMessage de null a Added Successfull
           // Esto muestra el mensaje por 5 segundos, luego el TimeOut lo devuelve a null
+          setErrorColor('green')
           setErrorMessage('Added Successfull')
           setTimeout(() => {
+            setErrorColor(null)
             setErrorMessage(null)
           }, 5000)
+        })
+        .catch(error => {
+          setErrorColor('red')
+          setErrorMessage('Name must be 3 characters long')
+          setTimeout(() => {
+            setErrorColor(null)
+            setErrorMessage(null)
+          }, 5000)
+          console.log(error.response.data.error)
         })
       console.log(persons)
     } else {
@@ -104,8 +116,10 @@ const App = () => {
             setNewNumber('')
             // Cambiamos el estado del errorMessage de null a Number Update Successfull
             // Esto muestra el mensaje por 5 segundos, luego el TimeOut lo devuelve a null
+            setErrorColor('green')
             setErrorMessage('Number Update Successfull')
             setTimeout(() => {
+              setErrorColor(null)
               setErrorMessage(null)
             }, 5000)
           })
@@ -134,14 +148,18 @@ const App = () => {
           setPersons(persons.filter(person => person.id !== id))
           // Cambiamos el estado del errorMessage de null a Deleted Successfull
           // Esto muestra el mensaje por 5 segundos, luego el TimeOut lo devuelve a null
+          setErrorColor('green')
           setErrorMessage('Deleted Successfull')
           setTimeout(() => {
+            setErrorColor(null)
             setErrorMessage(null)
           }, 5000)
         })
         .catch(error => {
+          setErrorColor('red')
           setErrorMessage('This user has already been removed from server')
           setTimeout(() => {
+            setErrorColor(null)
             setErrorMessage(null)
           }, 5000)
         }
@@ -154,7 +172,7 @@ const App = () => {
 
       <h1>Phonebook</h1>
 
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} colorEr={errorColor} />
 
       <Filter onChangeFilter={onChangeFilter} />
 

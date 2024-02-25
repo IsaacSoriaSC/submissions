@@ -5,7 +5,6 @@ const cors = require('cors')
 const Entrie = require('./models/phone')
 const mongoose = require('mongoose')
 
-// Database routes working with Browser and Postman
 
 app.use(express.static('dist'))
 app.use(cors())
@@ -37,7 +36,7 @@ app.get('/api/persons', (request, response) => {
       .catch(error => next(error))
     })
     
-    app.post('/api/persons', (request, response) => {
+    app.post('/api/persons', (request, response, next) => {
       const body = request.body
     
       if (body.name === undefined) {
@@ -52,17 +51,13 @@ app.get('/api/persons', (request, response) => {
       entrie.save().then(savedEntrie => {
         response.json(savedEntrie)
       })
+      .catch(error => next(error))
     })
 
     app.put('/api/persons/:id', (request, response, next) => {
-      const body = request.body
+      const { name, number } = request.body
     
-      const entrie = {
-        name: body.name,
-        number: body.number,
-      }
-    
-      Entrie.findByIdAndUpdate(request.params.id, entrie, { new: true })
+      Entrie.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: 'query' })
         .then(updatedEntrie => {
           response.json(updatedEntrie)
         })
@@ -88,7 +83,9 @@ app.get('/api/persons', (request, response) => {
     
       if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
-      } 
+      } else if (error.name === 'ValidationError'){
+        return response.status(400).json({ error: error.message})
+      }
     
       next(error)
     }

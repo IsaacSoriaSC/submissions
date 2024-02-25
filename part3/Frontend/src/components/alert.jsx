@@ -1,13 +1,13 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/prop-types */
-const Notification = ({ message }) => {
+const Notification = ({ message, colorEr }) => {
   if (message == null) {
     return null
   }
 
   const styles = {
     borderStyle: 'solid',
-    color: 'green',
+    color: colorEr,
     fontSize: 15
   }
 
