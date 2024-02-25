@@ -88,7 +88,12 @@ const App = () => {
         })
         .catch(error => {
           setErrorColor('red')
-          setErrorMessage('Name must be 3 characters long')
+          setErrorMessage(
+          <div>
+            Name must be at least 3 characters long <br />
+            Number should be at least 8 numbers & follow the format: XX-XXXXX or XXX-XXXXX
+          </div>
+          )
           setTimeout(() => {
             setErrorColor(null)
             setErrorMessage(null)
