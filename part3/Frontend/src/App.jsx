@@ -20,7 +20,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [errorColor, setErrorColor] = useState(null)
   const [country, setCountry] = useState([])
-  const [changeCountry, setChangeCountry] = useState ('')
+  const [changeCountry, setChangeCountry] = useState('')
 
   // Hook de efecto para obtener los datos de la API de manera asíncrona
   useEffect(() => {

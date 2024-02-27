@@ -1,25 +1,25 @@
-import App from "../App"
-
+/* eslint-disable react/prop-types */
+/* eslint-disable react/react-in-jsx-scope */
 const PersonForm = (props) => {
-    return (
+  return (
         <form onSubmit={props.setNewPerson} >
         <div>
           name: <input
            value={props.newName}
-           onChange={props.onChangeName} 
+           onChange={props.onChangeName}
            required
            />
         </div>
-        <div>number: <input 
+        <div>number: <input
            value={props.newNumber}
            onChange={props.onChangeNumber}
-           required 
+           required
         /></div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
-    )
+  )
 }
 
 export default PersonForm

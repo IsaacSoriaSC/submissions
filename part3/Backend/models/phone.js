@@ -4,7 +4,6 @@ mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
 
-
 console.log('connecting to', url)
 
 mongoose.connect(url)
@@ -26,13 +25,13 @@ const entrieSchema = new mongoose.Schema({
     type: String,
     minLength: 8,
     validate: {
-      validator: function(value){
-      const regex = /^\d{2,3}-\d+$/;
-      return regex.test(value);
+      validator: function (value) {
+        const regex = /^\d{2,3}-\d+$/
+        return regex.test(value)
       }
     },
     required: true
-  },
+  }
 })
 
 entrieSchema.set('toJSON', {

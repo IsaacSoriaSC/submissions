@@ -1,5 +1,4 @@
-import App from '../App'
-
+/* eslint-disable react/react-in-jsx-scope */
 const Filter = ({ onChangeFilter }) => {
   return (
         <div>
